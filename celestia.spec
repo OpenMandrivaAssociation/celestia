@@ -9,11 +9,16 @@ Release:	%{release}
 License:	GPL
 Group:		Sciences/Astronomy
 Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.bz2
-Source1:    %{name}-16.png.bz2
-Source2:    %{name}-32.png.bz2
-Source3:    %{name}-48.png.bz2
-Patch0:     celestia-1.4.1-cpp.patch
-Patch1:     celestia-1.4.1-destdir.patch
+Source1:	%{name}-16.png.bz2
+Source2:	%{name}-32.png.bz2
+Source3:	%{name}-48.png.bz2
+Patch0:		celestia-1.4.1-cpp.patch
+#Patch1:		celestia-1.4.1-destdir.patch
+Patch2:		celestia-1.4.1-kde-desktop.patch
+Patch3:		celestia-1.4.1-cfg.patch
+Patch4:		celestia-1.4.1-kde-datadir.patch
+Patch5:		celestia-1.4.1-3dsmodels.patch
+Patch6:		celestia-1.4.1-locale.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 BuildRequires:	gnome-libs-devel
@@ -37,13 +42,18 @@ through the universe to the object you want to visit.
 %prep
 %setup -q
 %patch0 -p0 -b .cppfix
-%patch1 -p0 -b .destdir
+#%patch1 -p0 -b .destdir
+%patch2 -p0 -b .kde-desktop
+%patch3 -p0 -b .cfg
+%patch4 -p0 -b .kde-datadir
+%patch5 -p0 -b .3dsmodels
+%patch6 -p0 -b .locale
 
 %build
 
 aclocal
 libtoolize --force
-automake -a
+automake
 autoconf-2.5x || :
 
 %configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-qt-libraries=/usr/lib/qt3/%{_lib}
