@@ -88,7 +88,7 @@ desktop-file-install --vendor="" \
   --add-category="Astronomy" \
   --add-category="Science" \
   --add-category="X-MandrivaLinux-MoreApplications-Sciences-Astronomy" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applnk/Edutainment/Science $RPM_BUILD_ROOT%{_datadir}/applnk/Edutainment/Science/*
+  --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applications/kde/*
 
 )
 
@@ -115,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/config/*
 %{_datadir}/mimelnk/*
 %{_datadir}/services/*
-#%{_datadir}/icons/hicolor/*
+%{_datadir}/applications/kde/%{name}.desktop
 # applnk/  apps/  config/  doc/  icons/  mimelnk/  services/
 %{_datadir}/%{name}
 %{_menudir}/%{name}
