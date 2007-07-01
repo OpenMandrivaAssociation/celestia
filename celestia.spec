@@ -110,7 +110,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog COPYING INSTALL README TODO 
 #%{_docdir}/HTML
 %attr(755,root,root) %{_bindir}/*
-%{_datadir}/applnk/*
 %{_datadir}/apps/*
 %{_datadir}/config/*
 %{_datadir}/mimelnk/*
