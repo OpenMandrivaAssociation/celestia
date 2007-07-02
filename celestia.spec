@@ -19,13 +19,15 @@ Patch3:		celestia-1.4.1-cfg.patch
 Patch4:		celestia-1.4.1-kde-datadir.patch
 Patch5:		celestia-1.4.1-3dsmodels.patch
 Patch6:		celestia-1.4.1-locale.patch
+Patch7:		celestia-1.4.1-lua51.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gtkglarea-devel
-BuildRequires:  kdelibs-devel
-BuildRequires:  libarts-devel
+BuildRequires:	kdelibs-devel
+BuildRequires:	libarts-devel
 BuildRequires:	gettext-devel
+BuildRequires:	lua-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -48,6 +50,7 @@ through the universe to the object you want to visit.
 %patch4 -p0 -b .kde-datadir
 %patch5 -p0 -b .3dsmodels
 %patch6 -p0 -b .locale
+%patch7 -p0 -b .lua51
 
 %build
 
