@@ -1,6 +1,6 @@
 %define name celestia
 %define version 1.4.1
-%define release %mkrel 4
+%define release %mkrel 5
 
 Summary:	A real-time visual space simulation
 Name:		%{name}
@@ -51,14 +51,15 @@ through the universe to the object you want to visit.
 %patch5 -p0 -b .3dsmodels
 %patch6 -p0 -b .locale
 %patch7 -p0 -b .lua51
+# support for automake 1.10: empty file
+# http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
+touch admin/config.rpath
 
 %build
-
 aclocal
 libtoolize --force
 automake
-autoconf-2.5x || :
-
+autoconf
 %configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-qt-libraries=/usr/lib/qt3/%{_lib}
 %make
 
@@ -125,6 +126,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 #%_sysconfdir/gconf/schemas/*
-
-
 
