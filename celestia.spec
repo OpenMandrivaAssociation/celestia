@@ -58,6 +58,7 @@ touch admin/config.rpath
 aclocal
 libtoolize --force
 automake
+sed -i -e '/AM_GCONF_SOURCE_2/d'  configure.in
 autoconf
 %configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-lua --with-qt-libraries=/usr/lib/qt3/%{_lib}
 %make
