@@ -1,6 +1,6 @@
 %define name celestia
 %define version 1.4.1
-%define release %mkrel 5
+%define release %mkrel 6
 
 Summary:	A real-time visual space simulation
 Name:		%{name}
@@ -13,7 +13,6 @@ Source1:	%{name}-16.png.bz2
 Source2:	%{name}-32.png.bz2
 Source3:	%{name}-48.png.bz2
 Patch0:		celestia-1.4.1-cpp.patch
-#Patch1:		celestia-1.4.1-destdir.patch
 Patch2:		celestia-1.4.1-kde-desktop.patch
 Patch3:		celestia-1.4.1-cfg.patch
 Patch4:		celestia-1.4.1-kde-datadir.patch
@@ -60,7 +59,7 @@ aclocal
 libtoolize --force
 automake
 autoconf
-%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-qt-libraries=/usr/lib/qt3/%{_lib}
+%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-lua --with-qt-libraries=/usr/lib/qt3/%{_lib}
 %make
 
 %install
@@ -88,11 +87,7 @@ xdg="true"
 EOF
 
 desktop-file-install --vendor="" \
-  --remove-category="Application" \
-  --add-category="Astronomy" \
-  --add-category="Science" \
-  --add-category="X-MandrivaLinux-MoreApplications-Sciences-Astronomy" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applications/kde/*
+   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applications/kde/*
 
 )
 
