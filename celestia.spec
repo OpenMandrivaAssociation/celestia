@@ -1,6 +1,6 @@
 %define name celestia
 %define version 1.4.1
-%define release %mkrel 6
+%define release %mkrel 7
 
 Summary:	A real-time visual space simulation
 Name:		%{name}
@@ -80,7 +80,7 @@ cat > ./%{_menudir}/%{name} <<EOF
 ?package(%{name}):\
 command="%{_bindir}/celestia"\
 title="Celestia"\
-longtitle="An astronomy simultor"\
+longtitle="An astronomy simulator"\
 needs="x11"\
 icon="%{name}.png"\
 section="More Applications/Sciences/Astronomy"\
