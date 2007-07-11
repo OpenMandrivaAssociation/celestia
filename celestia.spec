@@ -26,7 +26,7 @@ BuildRequires:	gtkglarea-devel
 BuildRequires:	kdelibs-devel
 BuildRequires:	libarts-devel
 BuildRequires:	gettext-devel
-BuildRequires:	lua-devel
+#BuildRequires:	lua-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -60,7 +60,7 @@ libtoolize --force
 automake
 sed -i -e '/AM_GCONF_SOURCE_2/d'  configure.in
 autoconf
-%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-lua --with-qt-libraries=/usr/lib/qt3/%{_lib}
+%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-qt-libraries=/usr/lib/qt3/%{_lib}
 %make
 
 %install
