@@ -27,7 +27,6 @@ BuildRequires:	kdelibs-devel
 BuildRequires:	libarts-devel
 BuildRequires:	gettext-devel
 #BuildRequires:	lua-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Celestia is a free real-time space simulation that lets you experience
