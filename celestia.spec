@@ -75,17 +75,6 @@ install -D -m 644 %{name}-32.png $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
 install -D -m 644 %{name}-48.png $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
 
 (cd $RPM_BUILD_ROOT
-mkdir -p ./%{_menudir}
-cat > ./%{_menudir}/%{name} <<EOF
-?package(%{name}):\
-command="%{_bindir}/celestia"\
-title="Celestia"\
-longtitle="An astronomy simulator"\
-needs="x11"\
-icon="%{name}.png"\
-section="More Applications/Sciences/Astronomy"\
-xdg="true"
-EOF
 
 desktop-file-install --vendor="" \
    --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applications/kde/*
@@ -117,7 +106,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/kde/%{name}.desktop
 # applnk/  apps/  config/  doc/  icons/  mimelnk/  services/
 %{_datadir}/%{name}
-%{_menudir}/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
