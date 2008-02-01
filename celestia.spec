@@ -66,7 +66,7 @@ install -D -m 644 %{name}-48.png $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
 (cd $RPM_BUILD_ROOT
 
 desktop-file-install --vendor="" --delete-original \
-   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applnk/Edutainment/Science/celestia.desktop
+   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/applnk/Edutainment/Science/celestia.desktop
 cd -
 )
 
