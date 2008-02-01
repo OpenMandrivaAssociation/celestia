@@ -53,8 +53,12 @@ through the universe to the object you want to visit.
 touch admin/config.rpath
 
 %build
-make -f admin/Makefile.common
-%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath --with-qt-libraries=/usr/lib/qt3/%{_lib}
+aclocal
+libtoolize --force
+automake
+sed -i -e '/AM_GCONF_SOURCE_2/d'  configure.in
+autoconf
+%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath
 %make
 
 %install
@@ -70,13 +74,13 @@ install -D -m 644 %{name}-48.png $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
 
 (cd $RPM_BUILD_ROOT
 
-desktop-file-install --vendor="" \
-   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applications/kde/*
-
+desktop-file-install --vendor="" --delete-original \
+   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/%{_datadir}/applnk/Edutainment/Science/celestia.desktop
+cd -
 )
 
 
-%find_lang %name
+%find_lang %name %name celestia_constellations
 
 %post
 %{update_menus}
@@ -98,10 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mimelnk/*
 %{_datadir}/services/*
 %{_datadir}/applications/kde/%{name}.desktop
-# applnk/  apps/  config/  doc/  icons/  mimelnk/  services/
 %{_datadir}/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
-#%_sysconfdir/gconf/schemas/*
 
