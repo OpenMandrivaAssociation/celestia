@@ -12,12 +12,8 @@ Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
 Source1:	%{name}-16.png.bz2
 Source2:	%{name}-32.png.bz2
 Source3:	%{name}-48.png.bz2
-Patch0:		celestia-1.4.1-cpp.patch
 Patch2:		celestia-1.4.1-kde-desktop.patch
 Patch3:		celestia-1.4.1-cfg.patch
-Patch4:		celestia-1.4.1-kde-datadir.patch
-Patch5:		celestia-1.4.1-3dsmodels.patch
-Patch7:		celestia-1.4.1-lua51.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 BuildRequires:	gnome-libs-devel
@@ -41,13 +37,8 @@ through the universe to the object you want to visit.
 
 %prep
 %setup -q
-#%patch0 -p0 -b .cppfix
-#%patch1 -p0 -b .destdir
 %patch2 -p0 -b .kde-desktop
 %patch3 -p0 -b .cfg
-#%patch4 -p0 -b .kde-datadir
-#%patch5 -p0 -b .3dsmodels
-#%patch7 -p0 -b .lua51
 # support for automake 1.10: empty file
 # http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
 touch admin/config.rpath
