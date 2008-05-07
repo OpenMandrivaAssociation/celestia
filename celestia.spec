@@ -1,5 +1,5 @@
 %define name celestia
-%define version 1.5.0
+%define version 1.5.1
 %define release %mkrel 1
 
 Summary:	A real-time visual space simulation
