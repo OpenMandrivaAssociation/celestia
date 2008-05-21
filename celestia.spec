@@ -1,17 +1,14 @@
-%define name celestia
-%define version 1.5.1
-%define release %mkrel 1
-
 Summary:	A real-time visual space simulation
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		celestia
+Version:	1.5.1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
 Source1:	%{name}-16.png.bz2
 Source2:	%{name}-32.png.bz2
 Source3:	%{name}-48.png.bz2
+Patch0:		celestia-1.5.0-gcc43.patch
 Patch2:		celestia-1.5.0-kde-desktop.patch
 Patch3:		celestia-1.4.1-cfg.patch
 URL:		http://www.shatters.net/celestia/
@@ -36,7 +33,9 @@ across. A 'point-and-goto' interface makes it simple to navigate
 through the universe to the object you want to visit.
 
 %prep
+
 %setup -q
+%patch0 -p1 -b .gcc43
 %patch2 -p0 -b .kde-desktop
 %patch3 -p0 -b .cfg
 # support for automake 1.10: empty file
@@ -97,4 +96,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
-
