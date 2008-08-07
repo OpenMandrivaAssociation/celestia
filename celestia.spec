@@ -1,7 +1,7 @@
 Summary:	A real-time visual space simulation
 Name:		celestia
 Version:	1.5.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
