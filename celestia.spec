@@ -8,7 +8,7 @@ Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
 Source1:	%{name}-16.png.bz2
 Source2:	%{name}-32.png.bz2
 Source3:	%{name}-48.png.bz2
-Patch0:		celestia-1.5.0-gcc43.patch
+Patch0:		celestia-1.5.1-gcc43.patch
 Patch2:		celestia-1.5.0-kde-desktop.patch
 Patch3:		celestia-1.4.1-cfg.patch
 URL:		http://www.shatters.net/celestia/
