@@ -9,16 +9,15 @@ Source1:	%{name}-16.png.bz2
 Source2:	%{name}-32.png.bz2
 Source3:	%{name}-48.png.bz2
 Patch0:		celestia-1.5.1-gcc43.patch
-Patch2:		celestia-1.5.0-kde-desktop.patch
 Patch3:		celestia-1.4.1-cfg.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gtkglarea-devel
-BuildRequires:	kdelibs-devel
-BuildRequires:	libarts-devel
 BuildRequires:	gettext-devel
-#BuildRequires:	lua-devel
+BuildRequires:	gnomeui2-devel gtk2-devel gtkglext-devel
+BuildRequires:	libGConf2-devel
+BuildRequires:	desktop-file-utils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -36,24 +35,26 @@ through the universe to the object you want to visit.
 
 %setup -q
 %patch0 -p1 -b .gcc43
-%patch2 -p0 -b .kde-desktop
 %patch3 -p0 -b .cfg
 # support for automake 1.10: empty file
 # http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
 touch admin/config.rpath
 
 %build
-aclocal
-libtoolize --force
-automake
-sed -i -e '/AM_GCONF_SOURCE_2/d'  configure.in
-autoconf
-%configure2_5x --with-gtk --with-kde --with-gnome --disable-rpath
+make -f admin/Makefile.common
+%configure2_5x --with-gnome --disable-rpath
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall_std transform=""
+rm -rf %buildroot
+%makeinstall_std
+
+desktop-file-install --vendor='' \
+	--dir %buildroot%_datadir/applications \
+	--remove-category='Application' \
+	--add-category='GTK;GNOME' \
+	--remove-key='Version' \
+	%buildroot%_datadir/applications/*.desktop
 
 bzcat %{SOURCE1} > %{name}-16.png
 bzcat %{SOURCE2} > %{name}-32.png
@@ -61,14 +62,6 @@ bzcat %{SOURCE3} > %{name}-48.png
 install -D -m 644 %{name}-16.png $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
 install -D -m 644 %{name}-32.png $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
 install -D -m 644 %{name}-48.png $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
-
-(cd $RPM_BUILD_ROOT
-
-desktop-file-install --vendor="" --delete-original \
-   --dir $RPM_BUILD_ROOT%{_datadir}/applications/kde/ $RPM_BUILD_ROOT%{_datadir}/applnk/Edutainment/Science/celestia.desktop
-cd -
-)
-
 
 %find_lang %name %name celestia_constellations
 
@@ -82,20 +75,19 @@ cd -
 %{clean_menus}
 %endif
 
+%preun
+%preun_uninstall_gconf_schemas %name
+
 %clean
 rm -rf $RPM_BUILD_ROOT
-
 
 %files -f %name.lang
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING INSTALL README TODO 
-#%{_docdir}/HTML
 %attr(755,root,root) %{_bindir}/*
-%{_datadir}/apps/*
-%{_datadir}/config/*
-%{_datadir}/mimelnk/*
-%{_datadir}/services/*
-%{_datadir}/applications/kde/%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.png
+%{_sysconfdir}/gconf/schemas/celestia.schemas
 %{_datadir}/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
