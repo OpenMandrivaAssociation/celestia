@@ -17,6 +17,7 @@ BuildRequires:	cairo-devel
 BuildRequires:	gettext-devel
 BuildRequires:	libtheora-devel
 BuildRequires:	gtk2-devel gtkglext-devel
+BuildRequires:	jpeg-devel
 BuildRequires:	lua-devel
 BuildRequires:	desktop-file-utils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
