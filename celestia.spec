@@ -5,11 +5,12 @@ Release:	%mkrel 3
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
-Source1:	%{name}-16.png.bz2
-Source2:	%{name}-32.png.bz2
-Source3:	%{name}-48.png.bz2
+Source1:	%{name}-16.png
+Source2:	%{name}-32.png
+Source3:	%{name}-48.png
 Patch0:		celestia-1.5.1-gcc44.patch
 Patch1:		celestia-1.6.0-cfg.patch
+Patch2:		celestia-1.6.0-gcc45.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 #BuildRequires:	gnome-libs-devel
@@ -38,6 +39,7 @@ through the universe to the object you want to visit.
 %setup -q
 %patch0 -p1 -b .gcc44
 %patch1 -p0 -b .cfg
+%patch2 -p0 -b .gcc45
 # support for automake 1.10: empty file
 # http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
 touch admin/config.rpath
@@ -58,16 +60,13 @@ rm -rf %buildroot
 desktop-file-install --vendor='' \
 	--dir %buildroot%_datadir/applications \
 	--remove-category='Application' \
-	--add-category='GTK;' \
+	--add-category='GTK;Education' \
 	--remove-key='Version' \
 	%buildroot%_datadir/applications/*.desktop
 
-bzcat %{SOURCE1} > %{name}-16.png
-bzcat %{SOURCE2} > %{name}-32.png
-bzcat %{SOURCE3} > %{name}-48.png
-install -D -m 644 %{name}-16.png %{buildroot}%{_miconsdir}/%{name}.png
-install -D -m 644 %{name}-32.png %{buildroot}%{_iconsdir}/%{name}.png
-install -D -m 644 %{name}-48.png %{buildroot}%{_liconsdir}/%{name}.png
+install -D -m 644 %{SOURCE1} %{buildroot}%{_miconsdir}/%{name}.png
+install -D -m 644 %{SOURCE2} %{buildroot}%{_iconsdir}/%{name}.png
+install -D -m 644 %{SOURCE3} %{buildroot}%{_liconsdir}/%{name}.png
 
 %find_lang %name %name celestia_constellations
 
