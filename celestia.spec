@@ -1,16 +1,17 @@
 Summary:	A real-time visual space simulation
 Name:		celestia
-Version:	1.6.0
-Release:	%mkrel 3
+Version:	1.6.1
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
 Source1:	%{name}-16.png
 Source2:	%{name}-32.png
 Source3:	%{name}-48.png
-Patch0:		celestia-1.5.1-gcc44.patch
-Patch1:		celestia-1.6.0-cfg.patch
-Patch2:		celestia-1.6.0-gcc45.patch
+Patch0:         celestia-1.6.1-gcc46.patch
+Patch1:         celestia-1.6.0-cfg.patch
+Patch2:         celestia-1.6.1-zlib.patch
+Patch3:         celestia-1.6.1-link.patch
 URL:		http://www.shatters.net/celestia/
 BuildRequires:	libmesaglut-devel
 #BuildRequires:	gnome-libs-devel
@@ -19,6 +20,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	libtheora-devel
 BuildRequires:	gtk2-devel gtkglext-devel
 BuildRequires:	jpeg-devel
+BuildRequires:  png-devel
 BuildRequires:	lua-devel
 BuildRequires:	desktop-file-utils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -37,9 +39,10 @@ through the universe to the object you want to visit.
 %prep
 
 %setup -q
-%patch0 -p1 -b .gcc44
+%patch0 -p0 -b .gcc
 %patch1 -p0 -b .cfg
-%patch2 -p0 -b .gcc45
+%patch2 -p0 -b .zlib
+%patch3 -p0 -b .link
 # support for automake 1.10: empty file
 # http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
 touch admin/config.rpath
@@ -54,21 +57,21 @@ touch admin/config.rpath
 %make
 
 %install
-rm -rf %buildroot
+rm -rf %{buildroot}
 %makeinstall_std
 
 desktop-file-install --vendor='' \
-	--dir %buildroot%_datadir/applications \
+	--dir %{buildroot}%{_datadir}/applications \
 	--remove-category='Application' \
 	--add-category='GTK;Education' \
 	--remove-key='Version' \
-	%buildroot%_datadir/applications/*.desktop
+	%{buildroot}%{_datadir}/applications/*.desktop
 
 install -D -m 644 %{SOURCE1} %{buildroot}%{_miconsdir}/%{name}.png
 install -D -m 644 %{SOURCE2} %{buildroot}%{_iconsdir}/%{name}.png
 install -D -m 644 %{SOURCE3} %{buildroot}%{_liconsdir}/%{name}.png
 
-%find_lang %name %name celestia_constellations
+%find_lang %{name} %{name} celestia_constellations
 
 %if %mdkversion < 200900
 %post
@@ -83,7 +86,7 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_liconsdir}/%{name}.png
 %clean
 rm -rf %{buildroot}
 
-%files -f %name.lang
+%files -f %{name}.lang
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING INSTALL README 
 %attr(755,root,root) %{_bindir}/*
