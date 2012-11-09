@@ -1,0 +1,10 @@
+--- src/celengine/frametree.h.gcc	2011-09-13 16:21:48.000000000 +0200
++++ src/celengine/frametree.h	2011-09-13 16:22:06.000000000 +0200
+@@ -14,6 +14,7 @@
+ #define _CELENGINE_FRAMETREE_H_
+ 
+ #include <vector>
++#include <cstdio>
+ 
+ class Star;
+ class Body;
