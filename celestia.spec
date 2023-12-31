@@ -63,7 +63,9 @@ Requires:       %{name}-common%{?_isa} = %{version}-%{release}
 BuildRequires:  cmake(Qt6)
 BuildRequires:	 cmake(Qt6Core)
 BuildRequires:  cmake(Qt6Core5Compat)
+BuildRequires:  cmake(Qt6OpenGLWidgets)
 BuildRequires:  cmake(Qt6Widgets)
+BuildRequires:  qt6-qtbase-theme-gtk3
 BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wayland-scanner)
  
