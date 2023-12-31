@@ -1,30 +1,37 @@
-Summary:	A real-time visual space simulation
+%define oname Celectia
+%define git 20231231
+%define ver 1.7.0
+
+Summary:	OpenGL real-time visual space simulation
 Name:		celestia
-Version:	1.6.1
-Release:	3
+Version:	%{ver}.%{git}
+Release:	1
 License:	GPLv2+
 Group:		Sciences/Astronomy
-Url:		http://www.shatters.net/celestia/
-Source0:	http://prdownloads.sourceforge.net/celestia/%{name}-%{version}.tar.gz
-Source1:	%{name}-16.png
-Source2:	%{name}-32.png
-Source3:	%{name}-48.png
-Patch0:		celestia-1.6.1-gcc46.patch
-Patch1:		celestia-1.6.0-cfg.patch
-Patch2:		celestia-1.6.1-zlib.patch
-Patch3:		celestia-1.6.1-link.patch
-Patch4:		celestia-1.6.1-gcc47.patch
-Patch5:		celestia-1.6.1-libpng-16.patch
-BuildRequires:	desktop-file-utils
-BuildRequires:	gettext-devel
-BuildRequires:	jpeg-devel
-BuildRequires:	pkgconfig(cairo)
-BuildRequires:	pkgconfig(gdk-2.0)
-BuildRequires:	pkgconfig(gdkglext-1.0)
-BuildRequires:	pkgconfig(glut)
-BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(lua)
-BuildRequires:	pkgconfig(theora)
+Url:		https://celestiaproject.space/
+Source0:	https://github.com/CelestiaProject/Celestia/archive/%{oname}/Celestia-%{ver}.tar.gz
+
+BuildRequires:  cmake
+BuildRequires:  desktop-file-utils
+BuildRequires:  gettext-devel
+BuildRequires:  gperf
+BuildRequires:  appstream-util
+BuildRequires:  imagemagick
+ 
+BuildRequires:  ffmpeg-free-devel
+BuildRequires:  miniaudio-devel
+BuildRequires:  pkgconfig(eigen3)
+BuildRequires:  pkgconfig(epoxy)
+BuildRequires:  pkgconfig(fmt)
+BuildRequires:  pkgconfig(freetype2)
+BuildRequires:  pkgconfig(gl)
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  pkgconfig(libavif)
+BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:  pkgconfig(libpng)
+BuildRequires:  pkgconfig(luajit)
+
+Provides:       bundled(r128) = 1.6.0
 
 %description
 Celestia is a free real-time space simulation that lets you experience
@@ -37,60 +44,132 @@ scales, from galaxy clusters down to spacecraft only a few meters
 across. A 'point-and-goto' interface makes it simple to navigate
 through the universe to the object you want to visit.
 
-%files -f %{name}.lang
-%doc AUTHORS ChangeLog COPYING INSTALL README
-%attr(755,root,root) %{_bindir}/*
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/%{name}
-%{_iconsdir}/%{name}.png
-%{_miconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
-
-#----------------------------------------------------------------------------
-
+%package        common
+Summary:        Common files for %{name}
+Requires:       celestia-data
+#Requires:       google-noto-sans-fonts
+Requires:       tzdata
+ 
+Obsoletes:      %{name} < 1.6.3
+ 
+%description    common
+This package provides files common to all GUIs for %{name}.
+ 
+ 
+%package        qt
+Summary:        QT interface for %{name}
+Requires:       %{name}-common%{?_isa} = %{version}-%{release}
+ 
+BuildRequires:  cmake(Qt6)
+BuildRequires:	cmake(Qt6Core)
+BuildRequires:  cmake(Qt6Core5Compat)
+BuildRequires:  pkgconfig(wayland-protocols)
+BuildRequires:  pkgconfig(wayland-scanner)
+ 
+%description    qt
+This package provides the QT GUI for %{name}.
+ 
+%package        gtk
+Summary:        GTK interface for %{name}
+Requires:       %{name}-common%{?_isa} = %{version}-%{release}
+ 
+Provides:       %{name} = %{version}-%{release}
+ 
+BuildRequires:  pkgconfig(cairo)
+BuildRequires:  pkgconfig(gtk+-2.0)
+BuildRequires:  pkgconfig(gtkglext-1.0)
+ 
+%description    gtk
+This package provides the GTK GUI for %{name}.
+ 
+ 
+%package        doc
+Summary:        Documentation files for %{name}
+BuildArch:      noarch
+Requires:       %{name} = %{version}-%{release}
+ 
+%description    doc
+The %{name}-doc package contains documentation for %{name}.
+ 
+ 
 %prep
-%setup -q
-%patch0 -p0 -b .gcc
-%patch1 -p0 -b .cfg
-%patch2 -p0 -b .zlib
-%patch3 -p0 -b .link
-%patch4 -p1 -b .gcc47
-%patch5 -p0 -b .png16
-
-# support for automake 1.10: empty file
-# http://celestia.cvs.sourceforge.net/celestia/celestia/admin/config.rpath?view=markup&sortby=date
-touch admin/config.rpath
-
-# (cjw) A new gettext Makefile.in.in is needed for new autotools but gettextize 
-#       cannot be run from a script, so copy it manually.
-#       This hack should be removed when upstream updates gettext files.
-cp -f %{_datadir}/gettext/po/Makefile.in.in po/Makefile.in.in
-cp -f %{_datadir}/gettext/po/Makefile.in.in po2/Makefile.in.in
-
+%autosetup -n Celestia-%{ver} -p1
+ 
+# Change default config
+#sed -i 's|# LeapSecondsFile "|LeapSecondsFile "|g' celestia.cfg
+#sed -i 's|DejaVuSans.ttf,9"|%{_datadir}/fonts/google-noto/NotoSans-Regular.ttf,9"|g' celestia.cfg
+#sed -i 's|DejaVuSans-Bold.ttf,15"|%{_datadir}/fonts/google-noto/NotoSans-Bold.ttf,15"|g' celestia.cfg
+ 
 %build
-autoreconf -fi
-%configure2_5x \
-	--with-gtk \
-	--disable-rpath \
-	--enable-cairo \
-	--enable-theora \
-	--with-lua
-%make
-
+%cmake \
+       -DENABLE_DATA=ON \
+       -DENABLE_QT5=OFF \
+       -DENABLE_QT6=ON \
+       -DENABLE_GTK=ON \
+       -DENABLE_FFMPEG=ON \
+       -DENABLE_MINIAUDIO=ON \
+       -DENABLE_LIBAVIF=ON \
+       -DUSE_WAYLAND=ON \
+       -DGIT_COMMIT="%{version}"
+#       -DENABLE_GLES=ON \ Disabled due to missing support on QT
+#       -DUSE_GTK3=ON \ is broken
+ 
+%cmake_build
+# create standard size icons
+convert src/celestia/qt/Celestia.ico hi-apps-celestia.png
+ 
 %install
-%makeinstall_std
-
-desktop-file-install --vendor='' \
-	--dir %{buildroot}%{_datadir}/applications \
-	--remove-category='Application' \
-	--add-category='GTK;Education' \
-	--remove-key='Version' \
-	%{buildroot}%{_datadir}/applications/*.desktop
-
-install -D -m 644 %{SOURCE1} %{buildroot}%{_miconsdir}/%{name}.png
-install -D -m 644 %{SOURCE2} %{buildroot}%{_iconsdir}/%{name}.png
-install -D -m 644 %{SOURCE3} %{buildroot}%{_liconsdir}/%{name}.png
-
-%find_lang %{name} celestia_constellations %{name}.lang
+%make_install -C build
+# fix icon name used in GTK app
+mv %{buildroot}%{_datadir}/pixmaps/celestia{,-logo}.png
+# use standard size and location for desktop icons
+for f in hi-apps-celestia-*.png ; do
+  d=$(identify -format "%wx%h" $f) ;
+  install -D -m0644 $f %{buildroot}%{_datadir}/icons/hicolor/$d/apps/celestia.png ;
+done
+ 
+%find_lang %{name} --all-name
+ 
+rm %{buildroot}%{_datadir}/celestia/COPYING
+ 
+# Use system provided fonts
+rm -Rf %{buildroot}%{_datadir}/%{name}/fonts
+ 
+ 
+%check
+# Menu entry
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-{gtk,qt6}.desktop
+ 
+# Appdata file check
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/space.%{name}.%{name}_{gtk,qt6}.metainfo.xml
+ 
+ 
+# No file in the main celestia package
+# it's just a metapackage to provide a clean upgrade path from celestia < 1.7
+# requiring by default celestia-gtk
+ 
+%files common -f %{name}.lang
+%doc AUTHORS ChangeLog README coding-standards.html
+%doc CONTRIBUTING.md devguide.txt
+%license COPYING
+%{_libdir}/lib%{name}.so.1.7*
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/pixmaps/%{name}-logo.png
+%{_datadir}/%{name}
+%exclude %{_datadir}/%{name}/help
+ 
+%files qt
+%{_bindir}/%{name}-qt6
+%{_mandir}/man1/%{name}-qt6.1*
+%{_datadir}/metainfo/space.%{name}.%{name}_qt6.metainfo.xml
+%{_datadir}/applications/%{name}-qt6.desktop
+ 
+%files gtk
+%{_bindir}/%{name}-gtk
+%{_mandir}/man1/%{name}-gtk.1*
+%{_datadir}/metainfo/space.%{name}.%{name}_gtk.metainfo.xml
+%{_datadir}/applications/%{name}-gtk.desktop
+ 
+%files doc
+%{_datadir}/%{name}/help
 
