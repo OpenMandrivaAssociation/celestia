@@ -119,7 +119,7 @@ The %{name}-doc package contains documentation for %{name}.
 #       -DENABLE_GLES=ON \ Disabled due to missing support on QT
 #       -DUSE_GTK3=ON \ is broken
  
-%cmake_build
+%make_build
 # create standard size icons
 convert src/celestia/qt/Celestia.ico hi-apps-celestia.png
  
