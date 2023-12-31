@@ -159,8 +159,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/space.%{n
 %doc CONTRIBUTING.md devguide.txt
 %license COPYING
 %{_libdir}/lib%{name}.so.1.7*
-%{_datadir}/icons/hicolor/*/apps/%{name}.png
-%{_datadir}/pixmaps/%{name}-logo.png
+#{_datadir}/icons/hicolor/*/apps/%{name}.png
+#{_datadir}/pixmaps/%{name}-logo.png
 %{_datadir}/%{name}
 %exclude %{_datadir}/%{name}/help
  
