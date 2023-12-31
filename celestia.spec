@@ -68,6 +68,8 @@ BuildRequires:  cmake(Qt6Widgets)
 BuildRequires:  qt6-qtbase-theme-gtk3
 BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wayland-scanner)
+BuildRequires:  pkgconfig(xkbcommon-x11)
+BuildRequires:  pkgconfig(vulkan)
  
 %description    qt
 This package provides the QT GUI for %{name}.
