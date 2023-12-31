@@ -18,7 +18,7 @@ BuildRequires:  gperf
 BuildRequires:  appstream-util
 BuildRequires:  imagemagick
  
-BuildRequires:  ffmpeg-free-devel
+BuildRequires:  ffmpeg-devel
 BuildRequires:  miniaudio-devel
 BuildRequires:  pkgconfig(eigen3)
 BuildRequires:  pkgconfig(epoxy)
