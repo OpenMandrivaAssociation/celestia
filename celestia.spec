@@ -122,7 +122,7 @@ The %{name}-doc package contains documentation for %{name}.
  
 %make_build
 # create standard size icons
-convert src/celestia/qt/Celestia.ico hi-apps-celestia.png
+#convert src/celestia/qt/Celestia.ico hi-apps-celestia.png
  
 %install
 %make_install -C build
