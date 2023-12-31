@@ -127,19 +127,19 @@ The %{name}-doc package contains documentation for %{name}.
 %install
 %make_install -C build
 # fix icon name used in GTK app
-mv %{buildroot}%{_datadir}/pixmaps/celestia{,-logo}.png
+#mv %{buildroot}%{_datadir}/pixmaps/celestia{,-logo}.png
 # use standard size and location for desktop icons
-for f in hi-apps-celestia-*.png ; do
-  d=$(identify -format "%wx%h" $f) ;
-  install -D -m0644 $f %{buildroot}%{_datadir}/icons/hicolor/$d/apps/celestia.png ;
-done
+#for f in hi-apps-celestia-*.png ; do
+#  d=$(identify -format "%wx%h" $f) ;
+#  install -D -m0644 $f %{buildroot}%{_datadir}/icons/hicolor/$d/apps/celestia.png ;
+#done
  
 %find_lang %{name} --all-name
  
 rm %{buildroot}%{_datadir}/celestia/COPYING
  
 # Use system provided fonts
-rm -Rf %{buildroot}%{_datadir}/%{name}/fonts
+#rm -Rf %{buildroot}%{_datadir}/%{name}/fonts
  
  
 %check
