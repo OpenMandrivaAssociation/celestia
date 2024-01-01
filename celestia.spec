@@ -10,6 +10,8 @@ License:	GPLv2+
 Group:		Sciences/Astronomy
 Url:		https://celestiaproject.space/
 Source0:	https://github.com/CelestiaProject/Celestia/archive/%{oname}/Celestia-%{ver}.tar.gz
+# data download from here: https://github.com/CelestiaProject/CelestiaContent/
+Source1: CelestiaContent-20240101.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
@@ -47,7 +49,7 @@ through the universe to the object you want to visit.
 
 %package        common
 Summary:        Common files for %{name}
-Requires:       celestia-data
+#Requires:       celestia-data
 #Requires:       google-noto-sans-fonts
 Requires:       tzdata
  
@@ -99,7 +101,10 @@ The %{name}-doc package contains documentation for %{name}.
  
  
 %prep
-%autosetup -n Celestia-%{ver} -p1
+#autosetup -n Celestia-%{ver} -p1
+%autopatch -p1
+mkdir -p content
+tar xzf %{SOURCE1}  --strip-components=1 -C content
  
 # Change default config
 #sed -i 's|# LeapSecondsFile "|LeapSecondsFile "|g' celestia.cfg
@@ -123,9 +128,16 @@ The %{name}-doc package contains documentation for %{name}.
 %make_build
 # create standard size icons
 #convert src/celestia/qt/Celestia.ico hi-apps-celestia.png
+pushd content
+%cmake
+%make_build
+popd
  
 %install
 %make_install -C build
+pushd content
+%cmake_install
+popd
 # fix icon name used in GTK app
 #mv %{buildroot}%{_datadir}/pixmaps/celestia{,-logo}.png
 # use standard size and location for desktop icons
