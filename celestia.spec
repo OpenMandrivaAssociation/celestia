@@ -47,7 +47,7 @@ through the universe to the object you want to visit.
 
 %package        common
 Summary:        Common files for %{name}
-Requires:       celestia-data = %{ver}
+Requires:       celestia-data
 #Requires:      google-noto-sans-fonts
 Requires:       tzdata
  
@@ -77,7 +77,7 @@ This package provides the QT GUI for %{name}.
 %package        gtk
 Summary:        GTK interface for %{name}
 Requires:       %{name}-common%{?_isa} = %{version}-%{release}
- 
+Requires:       gtkglext
 Provides:       %{name} = %{version}-%{release}
  
 BuildRequires:  pkgconfig(cairo)
