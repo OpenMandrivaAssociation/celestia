@@ -5,7 +5,7 @@
 Summary:	OpenGL real-time visual space simulation
 Name:		celestia
 Version:	%{ver}.%{git}
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Url:		https://celestiaproject.space/
