@@ -1,11 +1,11 @@
 %define oname Celectia
-%define git 20231231
+%define git 20250819
 %define ver 1.7.0
 
 Summary:	OpenGL real-time visual space simulation
 Name:		celestia
 Version:	%{ver}.%{git}
-Release:	6
+Release:	1
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Url:		https://celestiaproject.space/
