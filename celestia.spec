@@ -17,7 +17,7 @@ BuildRequires:  gettext-devel
 BuildRequires:  gperf
 BuildRequires:  appstream-util
 BuildRequires:  imagemagick
- 
+BuildRequires:  boost-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  miniaudio-devel
 BuildRequires:  pkgconfig(eigen3)
