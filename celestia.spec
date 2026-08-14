@@ -11,8 +11,9 @@ Group:		Sciences/Astronomy
 Url:		https://celestiaproject.space/
 Source0:	https://github.com/CelestiaProject/Celestia/archive/%{commit}/Celestia-%{ver}.%{git}.tar.gz#/%{commit}.tar.gz
 
-BuildRequires:  cmake
-BuildRequires:  desktop-file-utils
+BuildRequires:	cmake
+BuildRequires:	make
+BuildRequires:	desktop-file-utils
 BuildRequires:  gettext-devel
 BuildRequires:  gperf
 BuildRequires:  appstream-util
