@@ -1,15 +1,15 @@
-%define oname Celectia
-%define git 20231231
+%define git 20260813
 %define ver 1.7.0
+%define commit e35c3496992d26adb753bfab67e8b7d03ad37ef3
 
 Summary:	OpenGL real-time visual space simulation
 Name:		celestia
 Version:	%{ver}.%{git}
-Release:	6
+Release:	1
 License:	GPLv2+
 Group:		Sciences/Astronomy
 Url:		https://celestiaproject.space/
-Source0:	https://github.com/CelestiaProject/Celestia/archive/%{oname}/Celestia-%{ver}.tar.gz
+Source0:	https://github.com/CelestiaProject/Celestia/archive/%{commit}/Celestia-%{ver}.%{git}.tar.gz#/%{commit}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  desktop-file-utils
@@ -33,6 +33,8 @@ BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(luajit)
 
 Provides:       bundled(r128) = 1.6.0
+
+Requires:	%{name}-qt = %{EVRD}
 
 %description
 Celestia is a free real-time space simulation that lets you experience
@@ -59,6 +61,8 @@ This package provides files common to all GUIs for %{name}.
 %package        qt
 Summary:        QT interface for %{name}
 Requires:       %{name}-common%{?_isa} = %{version}-%{release}
+# GTK frontend was removed upstream
+Obsoletes:      %{name}-gtk < %{version}
  
 BuildRequires:  cmake(Qt6)
 BuildRequires:  cmake(Qt6Core)
@@ -75,19 +79,6 @@ BuildRequires:  pkgconfig(vulkan)
 %description    qt
 This package provides the QT GUI for %{name}.
  
-%package        gtk
-Summary:        GTK interface for %{name}
-Requires:       %{name}-common%{?_isa} = %{version}-%{release}
-Requires:       gtkglext
-Provides:       %{name} = %{version}-%{release}
- 
-BuildRequires:  pkgconfig(cairo)
-BuildRequires:  pkgconfig(gtk+-2.0)
-BuildRequires:  pkgconfig(gtkglext-1.0)
- 
-%description    gtk
-This package provides the GTK GUI for %{name}.
-
 %package        doc
 Summary:        Documentation files for %{name}
 BuildArch:      noarch
@@ -97,7 +88,7 @@ Requires:       %{name} = %{version}-%{release}
 The %{name}-doc package contains documentation for %{name}.
  
 %prep
-%autosetup -n Celestia-%{ver} -p1
+%autosetup -n Celestia-%{commit} -p1
  
 # Change default config
 #sed -i 's|# LeapSecondsFile "|LeapSecondsFile "|g' celestia.cfg
@@ -106,17 +97,11 @@ The %{name}-doc package contains documentation for %{name}.
  
 %build
 %cmake \
-       -DENABLE_DATA=ON \
-       -DENABLE_QT5=OFF \
        -DENABLE_QT6=ON \
-       -DENABLE_GTK=ON \
        -DENABLE_FFMPEG=ON \
        -DENABLE_MINIAUDIO=ON \
        -DENABLE_LIBAVIF=ON \
-       -DUSE_WAYLAND=ON \
-       -DGIT_COMMIT="%{version}"
-#       -DENABLE_GLES=ON \ Disabled due to missing support on QT
-#       -DUSE_GTK3=ON \ is broken
+       -DGIT_COMMIT="%{commit}"
  
 %make_build
 # create standard size icons
@@ -143,10 +128,10 @@ rm %{buildroot}%{_datadir}/celestia/COPYING
  
 %check
 # Menu entry
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-{gtk,qt6}.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/space.celestiaproject.celestia_qt6.desktop
  
 # Appdata file check
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/space.%{name}.%{name}_{gtk,qt6}.metainfo.xml
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/space.celestiaproject.celestia_qt6.metainfo.xml
  
  
 # No file in the main celestia package
@@ -165,14 +150,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/space.%{n
 %files qt
 %{_bindir}/%{name}-qt6
 %{_mandir}/man1/%{name}-qt6.1*
-%{_datadir}/metainfo/space.%{name}.%{name}_qt6.metainfo.xml
-%{_datadir}/applications/%{name}-qt6.desktop
- 
-%files gtk
-%{_bindir}/%{name}-gtk
-%{_mandir}/man1/%{name}-gtk.1*
-%{_datadir}/metainfo/space.%{name}.%{name}_gtk.metainfo.xml
-%{_datadir}/applications/%{name}-gtk.desktop
+%{_datadir}/metainfo/space.celestiaproject.celestia_qt6.metainfo.xml
+%{_datadir}/applications/space.celestiaproject.celestia_qt6.desktop
  
 %files doc
 %{_datadir}/%{name}/help
