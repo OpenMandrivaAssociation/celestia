@@ -51,7 +51,8 @@ through the universe to the object you want to visit.
 
 %package        common
 Summary:        Common files for %{name}
-Requires:       celestia-data
+# celestia-data is not shipped in cooker; extra tests cannot install this otherwise
+Recommends:	celestia-data
 #Requires:      google-noto-sans-fonts
 Requires:       tzdata
  
